@@ -1,1 +1,0 @@
-SIGNUP_SUCCESS_MESSAGE = "Thank you for registering with weConnect hub To start using weConnect, go to your email and click the confirmation link. Thank you"
