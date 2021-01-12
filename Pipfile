@@ -1,0 +1,32 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+isort = "*"
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+sqlalchemy-searchable = "*"
+python-dotenv = "*"
+numpy = "*"
+sqlalchemy = "*"
+psycopg2 = "*"
+marshmallow = "*"
+flask-restx = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+pyjwt = "*"
+flask-mail = "*"
+celery = "==4.3.0"
+redis = "*"
+pytest = "*"
+coverage = "*"
+pytest-cov = "*"
+
+[requires]
+python_version = "3.8"
