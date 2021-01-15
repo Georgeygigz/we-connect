@@ -10,6 +10,7 @@ from api import api_blueprint
 from api.middlewares.base_validator import (ValidationError,
                                             middleware_blueprint)
 from api.models.database import db
+from api.utilities.constants import EXCLUDED_KEYS
 from config import AppConfig
 
 TASK_LIST = ['api.tasks.email_sender']
@@ -61,7 +62,10 @@ def handle_validation_error(error):
         for k, v in error.messages.items():
             for error in v:
                 error = error.lower()
-                errors.append(f'{k} {error}')
+                if k in EXCLUDED_KEYS:
+                    errors.append(f'{error}')
+                else:
+                    errors.append(f'{k} {error}')
     else:
         errors.extend(error.messages)
     return_message = {'status': 'failed', 'errors': errors}
@@ -74,4 +78,5 @@ def handle_exception(error):
     """Error handler called when a ValidationError Exception is raised."""
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
-    return response
+    # return response
+    return error.to_dict(), error.status_code
