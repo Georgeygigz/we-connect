@@ -13,9 +13,9 @@ from ..utilities.validators.url_validator import url_validator
 
 class UserSchema(AuditableBaseSchema):
 
-    """Role model schema."""
+    """User schema."""
     name = fields.String(
-        **common_args(validate=[string_length_validator(6), name_validator]), )
+        **common_args(validate=[string_length_validator(25), name_validator]), )
     username = fields.String(**common_args(
         validate=[string_length_validator(60), name_validator]))
     email = fields.String(**common_args(validate=email_validator))

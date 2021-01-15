@@ -7,11 +7,11 @@ from ..schemas.user import LoginSchema, UserSchema
 from ..utilities.constants import EXCLUDED_FIELDS
 from ..utilities.helpers.token import get_token_data
 from ..utilities.messages.success_messages import SUCCESS_MESSAGES
-from ..utilities.swagger.collections.auth import auth_namespace
+from ..utilities.swagger.collections.user import user_namespace
 from ..utilities.validators.validate_json_request import validate_json_request
 
 
-@auth_namespace.route('/signup')
+@user_namespace.route('/signup')
 class UserResource(Resource):
 
     """User Resource class for creating and getting users."""
@@ -21,7 +21,7 @@ class UserResource(Resource):
 
         Returns:
             (dict): Returns status and success message
-            data(dict): Returns the id, title and description of the user created
+            data(dict): Returns the user data
         """
         request_data = request.get_json()
         user_schema = UserSchema(exclude=EXCLUDED_FIELDS)
@@ -39,7 +39,7 @@ class UserResource(Resource):
         )
 
 
-@auth_namespace.route('/verify/<string:token>')
+@user_namespace.route('/verify/<string:token>')
 class VerifyUserResource(Resource):
 
     """Perform operation to a single user."""
@@ -59,7 +59,7 @@ class VerifyUserResource(Resource):
         )
 
 
-@auth_namespace.route('/login')
+@user_namespace.route('/login')
 class LoginResource(Resource):
 
     """User Resource class for creating and getting users."""

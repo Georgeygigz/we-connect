@@ -2,15 +2,17 @@ from sqlalchemy import event
 
 from .push_id import PushID
 from .user import User
+from .group import Group
+from .member import Member
 
 
 def fancy_id_generator(mapper, connection, target):
     """A function to generate unique identifiers on insert."""
-    push_id = PushID()
+    push_id = PushID(20,12)
     target.id = push_id.next_id()
 
 
-tables = [User]
+tables = [User, Group, Member]
 
 for tables in tables:
     event.listen(tables, 'before_insert', fancy_id_generator)

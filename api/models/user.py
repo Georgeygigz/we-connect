@@ -1,17 +1,12 @@
 
 # System imports
-import enum
 
 from .base.auditable_model import AuditableBaseModel
 from .database import db
 
 
-class Status(enum.Enum):
-    disabled = 'disabled'
-    enabled = 'enabled'
-
-
 class User(AuditableBaseModel):
+
     """"Class for user db table"""
     policies = {'patch': None, 'delete': 'owner'}
 

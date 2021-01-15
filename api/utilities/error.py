@@ -37,3 +37,39 @@ def raise_error(error_key, *args, **kwargs):
     """
     raise MarshmallowError(serialization_errors[error_key].format(*args),
                            kwargs.get('fields'))
+
+
+def raise_exception(error_message_mapper, error_key, status_code, *args):
+    """Raises validation error
+
+    Args:
+        error_message_mapper (dict): maps key to error message
+        error_key (str): the key that maps to relevant error message
+        status_code (int): the error status code
+        args (*): variable number of arguments
+
+    Raises:
+        ValidationError
+    """
+
+    raise ValidationError(
+        {
+            'message': error_message_mapper[error_key].format(*args)
+        }, status_code)
+
+
+def raise_error_helper(should_raise_error, error_mapper, error_key, *args):
+    """Raises validator error when should_raise_error parameter is True
+
+    Args:
+        should_raise_error(bool): Determines whether to raise error or not
+        error_mapper (dict): maps key to error message
+        error_key (str): the key that maps to relevant error message
+        args (*): variable number of arguments
+
+    Raises:
+        ValidationError: if the is_invalid parameter is True
+    """
+    status_code = 400
+    if should_raise_error:
+        raise_exception(error_mapper, error_key, status_code, *args)

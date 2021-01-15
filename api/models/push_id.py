@@ -24,7 +24,12 @@ class PushID(object):
                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                   '_abcdefghijklmnopqrstuvwxyz')
 
-    def __init__(self):
+    def __init__(self, total_chars, chars):
+
+        # Initialize the number of character the string should have
+        self.total_chars = total_chars
+        self.chars = chars
+        self.remaining_chars = total_chars - chars
 
         # Timestamp of last push, used to prevent local collisions if you
         # pushtwice in one ms.
@@ -35,7 +40,7 @@ class PushID(object):
         # collisions with other clients.  We store the last characters
         # we generated because in the event of a collision, we'll use
         # those same characters except "incremented" by one.
-        self.last_rand_chars = numpy.empty(12, dtype=int)
+        self.last_rand_chars = numpy.empty(chars, dtype=int)
 
     def next_id(self):
         """Generates a unique_id.
@@ -52,7 +57,7 @@ class PushID(object):
 
         self.set_last_rand_char(duplicate_time)
 
-        for i in range(12):
+        for i in range(self.chars):
             unique_id += self.PUSH_CHARS[self.last_rand_chars[i]]
 
         return unique_id
@@ -66,9 +71,9 @@ class PushID(object):
             unique_id (string): String of length 8.
         """
 
-        time_stamp_chars = numpy.empty(8, dtype=str)
+        time_stamp_chars = numpy.empty(self.remaining_chars, dtype=str)
 
-        for i in range(7, -1, -1):
+        for i in range(self.remaining_chars-1, -1, -1):
             time_stamp_chars[i] = self.PUSH_CHARS[now % 64]
             now = int(now / 64)
 
@@ -82,7 +87,7 @@ class PushID(object):
             duplicate_time (bool): Boolean value if time is duplicate.
         """
         if not duplicate_time:
-            for i in range(12):
+            for i in range(self.chars):
                 # random() returns a floating point number in the
                 # range(0.0, 1.0)
                 self.last_rand_chars[i] = int(random() * 64)
@@ -94,7 +99,7 @@ class PushID(object):
     def get_previous_rand_char(self):
         """Updates the last random characters if time is duplicate."""
 
-        for i in range(11, -1, -1):
+        for i in range(self.chars-1, -1, -1):
             if self.last_rand_chars[i] == 63:
                 self.last_rand_chars[i] = 0
             else:
