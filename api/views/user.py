@@ -27,7 +27,7 @@ class UserResource(Resource):
         user_schema = UserSchema(exclude=EXCLUDED_FIELDS)
         user_schema.context['request'] = request
         user_data = user_schema.load(request_data)
-        user = User.find_or_create(user_data)
+        user = User.find_or_create(user_data, email=request_data['email'])
 
         return (
             {
@@ -57,6 +57,27 @@ class VerifyUserResource(Resource):
             },
             200,
         )
+
+
+@user_namespace.route('/<string:user_id>')
+class VerifyUserResource(Resource):
+
+    """Perform operation to a single user."""
+    def get(self, user_id):
+        """Get single user"""
+        user = User.get_or_404(user_id)
+        user_schema = UserSchema(exclude=EXCLUDED_FIELDS)
+
+
+        return (
+            {
+                "status": "success",
+                "message": SUCCESS_MESSAGES["success"].format('Congratulation! email verified'),
+                "data": user_schema.dump(user),
+            },
+            200,
+        )
+
 
 
 @user_namespace.route('/login')
