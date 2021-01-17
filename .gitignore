@@ -2,11 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
+wec.json
 
 # C extensions
 *.so
 .vscode
-
+weconnect-cc71f191f83e.json
+weco.json
 # Distribution / packaging
 .Python
 build/

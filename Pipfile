@@ -27,6 +27,8 @@ redis = "*"
 pytest = "*"
 coverage = "*"
 pytest-cov = "*"
+google-cloud-vision = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.8"

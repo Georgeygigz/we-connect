@@ -24,7 +24,7 @@ class ModelOperations(object):
     """Mixin class with generic model operations."""
     def save(self):
         """Save a model instance."""
-        if request and request.decoded_token:
+        if request and 'decoded_token' in dir(request):
             self.created_by = request.decoded_token.get('id')
         db.session.add(self)
         db.session.commit()

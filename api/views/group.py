@@ -3,7 +3,7 @@ from flask_restx import Resource
 
 from ..models import Group, User, Member
 from ..schemas.group import GroupSchema
-from ..schemas.member import MemberSchema
+from ..schemas.member import MemberSchema, MemberListSchema
 from ..utilities.constants import EXCLUDED_FIELDS
 from ..utilities.messages.success_messages import SUCCESS_MESSAGES
 from ..utilities.swagger.collections.group import group_namespace
@@ -103,6 +103,28 @@ class GroupJoinResource(Resource):
             {
                 "status": "success",
                 "message": message,
+            },
+            200,
+        )
+
+
+@group_namespace.route('/members/<string:group_id>')
+class GroupJoinResource(Resource):
+
+    """Resource to get all members in a group"""
+    @token_required
+    def get(self, group_id):
+        group = Group.get_or_404(group_id)
+        members = Member.query_().filter_by(group_id=group.id)
+
+        # schema
+        member_schema = MemberListSchema(many=True, exclude=EXCLUDED_FIELDS)
+
+        return (
+            {
+                "status": "success",
+                "message": SUCCESS_MESSAGES['success'].format('Members'),
+                "data": member_schema.dump(members)
             },
             200,
         )

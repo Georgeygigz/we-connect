@@ -4,6 +4,8 @@ from celery import Celery
 from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_restx import Api
+from flask_cors import CORS
+
 from marshmallow import ValidationError as MarshmallowError
 
 from api import api_blueprint
@@ -28,6 +30,9 @@ def initialize_errorhandlers(application):
 def create_app(config):
     app = Flask(__name__)
     app.config.from_object(config)
+
+    # cors
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     # Register apps
     initialize_errorhandlers(app)
